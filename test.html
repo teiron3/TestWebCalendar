@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>FullCalendar Example</title>
+</head>
+
+<body>
+	<div id="calendar"></div>
+
+	<!-- FullCalendar JS -->
+	<script src="./lib/fullcalendar/dist/index.global.min.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var calendarEl = document.getElementById('calendar');
+
+			const initialOptions = {
+				locale: 'ja',
+				themeSystem: 'bootstrap5',
+				initialView: 'dayGridMonth',
+				height: 500,
+				headerToolbar: {
+					left: 'prevYear,prev,next,nextYear today',
+					center: 'title',
+					right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+				},
+				footerToolbar: {
+					left: 'prevYear,prev,next,nextYear',
+					center: '',
+					right: 'customButton'
+				},
+				buttonText: {
+					today: '今日',      // todayの表示ラベル
+					month: '月表示',    // dayGridMonthの表示ラベル
+					week: '週表示',     // timeGridWeekの表示ラベル
+					day: '日表示',      // timeGridDayの表示ラベル
+					list: 'リスト表示', // timeGridDayの表示ラベル
+				},
+				buttonIcons: {  // 要Bootstrap-icons
+					prev: 'chevron-left',      // 前月のアイコン
+					next: 'chevron-right',     // 来月のアイコン
+					prevYear: 'chevrons-left', // 前年のアイコン
+					nextYear: 'chevrons-right' // 来年のアイコン
+				},
+			};
+
+			var events = [
+				{ title: 'イベント1', start: '2026-03-10', description: 'イベント1の詳細情報です。' },
+				{ title: 'イベント2', start: '2026-03-15', end: '2026-03-17', description: 'イベント2の詳細情報です。' },
+				{ title: 'イベント3', start: '2026-03-20T10:00:00', description: 'イベント3の詳細情報です。' },
+				{ title: 'イベント4', start: '2026-03-25', description: 'イベント4の詳細情報です。' },
+				{ title: 'イベント5', start: '2026-03-28', description: 'イベント5の詳細情報です。' },
+				{ title: 'イベント6', start: '2026-04-01', description: 'イベント6の詳細情報です。' },
+				{ title: 'イベント7', start: '2026-04-05', description: 'イベント7の詳細情報です。' },
+				{ title: 'イベント8', start: '2026-03-20T14:00:00', description: 'イベント8の詳細情報です。' },
+				{ title: 'イベント9', start: '2026-03-20T16:00:00', description: 'イベント9の詳細情報です。' },
+				{ title: 'イベント10', start: '2026-03-25T09:00:00', description: 'イベント10の詳細情報です。' },
+				{ title: 'イベント11', start: '2026-03-25T11:00:00', description: 'イベント11の詳細情報です。' }
+			];
+
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+				initialView: 'dayGridMonth',
+				events: events,
+				////////////////////////////////
+
+
+				locale: 'ja',
+				themeSystem: 'bootstrap5',
+				initialView: 'dayGridMonth',
+				height: 500,
+				headerToolbar: {
+					left: 'prevYear,prev,next,nextYear today',
+					center: 'title',
+					right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+				},
+				footerToolbar: {
+					left: 'prevYear,prev,next,nextYear',
+					center: '',
+					right: 'customButton'
+				},
+				buttonText: {
+					today: '今日',      // todayの表示ラベル
+					month: '月表示',    // dayGridMonthの表示ラベル
+					week: '週表示',     // timeGridWeekの表示ラベル
+					day: '日表示',      // timeGridDayの表示ラベル
+					list: 'リスト表示', // timeGridDayの表示ラベル
+				},
+				buttonIcons: {  // 要Bootstrap-icons
+					prev: 'chevron-left',      // 前月のアイコン
+					next: 'chevron-right',     // 来月のアイコン
+					prevYear: 'chevrons-left', // 前年のアイコン
+					nextYear: 'chevrons-right' // 来年のアイコン
+				},
+				////////////////////////////////
+
+
+				dateClick: function (info) {
+					var selectedDate = info.dateStr;
+					var eventsOnDate = events.filter(function (event) {
+						return event.start.startsWith(selectedDate);
+					});
+
+					if (eventsOnDate.length > 0) {
+						var eventList = eventsOnDate.map(function (event) {
+							return `・${event.title}`;
+						}).join('\n');
+						alert(`選択した日付: ${selectedDate}\nイベント一覧:\n${eventList}`);
+					} else {
+						alert(`選択した日付: ${selectedDate}\nイベントはありません。`);
+					}
+				},
+				eventClick: function (info) {
+					alert(`イベント: ${info.event.title}\n詳細: ${info.event.extendedProps.description}`);
+				}
+			});
+
+			calendar.render();
+		});
+	</script>
+</body>
+
+</html>
