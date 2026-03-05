@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja-JP">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>FullCalendar Example</title>
+</head>
+
+<body>
+	<!-- FullCalendarのjsライブラリファイルは"lib\fullcalendar\dist\index.global.min.js"にあります -->
+	<!-- FullCalendarのcssファイルは存在しません -->
+	<script src="lib/fullcalendar/dist/index.global.min.js"></script>
+
+	<style>
+		/* カテゴリごとの色を定義 */
+		.fc-event.category-work {
+			background-color: #ffcc00;
+			border-color: #ffcc00;
+		}
+
+		.fc-event.category-personal {
+			background-color: #00ccff;
+			border-color: #00ccff;
+		}
+
+		/* リストのタイトル前の〇の色を変更 */
+		.fc-list-event-dot {
+			border-color: transparent;
+			/* デフォルトの枠線を無効化 */
+		}
+
+		.fc-event.category-work .fc-list-event-dot {
+			background-color: #ff00aa;
+			border-color: #ff00aa;
+		}
+
+		.fc-event.category-personal .fc-list-event-dot {
+			background-color: #00ccff;
+			border-color: #00ccff;
+		}
+	</style>
+
+	<div id="calendar"></div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var calendarEl = document.getElementById('calendar');
+
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+
+				initialView: 'listWeek',
+				events: [
+					{
+						title: 'Work Meeting',
+						start: '2026-03-10',
+						category: 'work' // カスタム属性
+					},
+					{
+						title: 'Personal Appointment',
+						start: '2026-03-12',
+						category: 'personal' // カスタム属性
+					}
+				],
+				eventContent: function (arg) {
+					// カテゴリ名を表示
+					let category = arg.event.extendedProps.category;
+					let customHtml = '<div class="fc-event-title">' + arg.event.title + '</div>';
+					if (category) {
+						customHtml += '<div class="fc-event-category">' + category + '</div>';
+					}
+					return { html: customHtml };
+				},
+				eventClassNames: function (arg) {
+					// カテゴリに応じたクラスを追加
+					let category = arg.event.extendedProps.category;
+					return category ? ['category-' + category] : [];
+				}
+			});
+
+			calendar.render();
+		});
+	</script>
+</body>
