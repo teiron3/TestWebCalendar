@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>チェックリスト作成</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 20px;
+		}
+
+		ul {
+			list-style-type: none;
+			padding: 0;
+		}
+
+		li {
+			margin: 5px 0;
+		}
+
+		button {
+			margin-top: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>チェックリスト作成</h1>
+	<button id="pasteButton">クリップボードから読み取る</button>
+	<ul id="checklist"></ul>
+	<button id="deleteButton">チェックされた項目を削除</button>
+
+	<script>
+		document.getElementById('pasteButton').addEventListener('click', async () => {
+			try {
+				const text = await navigator.clipboard.readText();
+				const lines = text.split('\n');
+				const checklist = document.getElementById('checklist');
+
+				lines.forEach(line => {
+					if (line.trim() !== '') {
+						const li = document.createElement('li');
+						const checkbox = document.createElement('input');
+						checkbox.type = 'checkbox';
+						const label = document.createElement('span');
+						label.textContent = line;
+
+						li.appendChild(checkbox);
+						li.appendChild(label);
+						checklist.appendChild(li);
+					}
+				});
+			} catch (err) {
+				alert('クリップボードの読み取りに失敗しました: ' + err);
+			}
+		});
+
+		document.getElementById('deleteButton').addEventListener('click', () => {
+			const checklist = document.getElementById('checklist');
+			const items = checklist.querySelectorAll('li');
+
+			items.forEach(item => {
+				const checkbox = item.querySelector('input[type="checkbox"]');
+				if (checkbox.checked) {
+					checklist.removeChild(item);
+				}
+			});
+		});
+	</script>
+</body>
+
+</html>
